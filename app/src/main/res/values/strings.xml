@@ -1,11 +1,3 @@
 <resources>
-    <string name="app_name" translatable="false">CurrencyConverter</string>
-    <string name="currency">Wybierz walutę</string>
-    <string name="current_price">Auktualna Wartość</string>
-    <string name="current_date">Na podstawie średniego kursu NBP z dnia</string>
-    <string name="currency_from">Przelicz z:</string>
-    <string name="currency_to">Przelicz na:</string>
-    <string name="btn_convert">Przelicz</string>
-    <string name="amount">Kwota</string>
-    <string name="edt_amount_hint">Podaj kwotę</string>
+    <string name="app_name">CurrencyConverter</string>
 </resources>
