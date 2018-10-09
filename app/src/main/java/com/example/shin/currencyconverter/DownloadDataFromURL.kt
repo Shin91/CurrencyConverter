@@ -12,30 +12,32 @@ class DownloadDataFromURL {
     @Throws(IOException::class)
     fun downloadJSONDataFromURL(link: String): String {
 
-        val stringBuilder: StringBuilder = StringBuilder()
 
-        val url = URL(link)
-        val urlConnection = url.openConnection() as HttpURLConnection
-        try {
 
-            val bufferedInputStream: BufferedInputStream = BufferedInputStream(urlConnection.inputStream)
-            val bufferedReader: BufferedReader = BufferedReader(InputStreamReader(bufferedInputStream))
+            val stringBuilder: StringBuilder = StringBuilder()
 
-            var inputLine: String?
-            inputLine = bufferedReader.readLine()
+            val url = URL(link)
+            val urlConnection = url.openConnection() as HttpURLConnection
+            try {
 
-            while (inputLine != null) {
+                val bufferedInputStream: BufferedInputStream = BufferedInputStream(urlConnection.inputStream)
+                val bufferedReader: BufferedReader = BufferedReader(InputStreamReader(bufferedInputStream))
 
-                stringBuilder.append(inputLine)
+                var inputLine: String?
                 inputLine = bufferedReader.readLine()
 
+                while (inputLine != null) {
+
+                    stringBuilder.append(inputLine)
+                    inputLine = bufferedReader.readLine()
+
+                }
+
+            } finally {
+                urlConnection.disconnect()
             }
 
-        } finally {
-            urlConnection.disconnect()
-        }
+            return stringBuilder.toString()
 
-        return stringBuilder.toString()
     }
-
 }
