@@ -13,6 +13,7 @@ class ParseCurrency {
         var currency = Currency()
 
         var jsonArray: JSONArray = JSONArray(topLevelCurrencyJSONData)
+
         currency.time = jsonArray.getJSONObject(0).getString("effectiveDate")
 
 

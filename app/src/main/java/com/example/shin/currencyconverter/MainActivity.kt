@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         btnConvert = findViewById(R.id.btnConvert)
         edtAmount = findViewById(R.id.edtAmount)
         txtConvertedCurrency = findViewById(R.id.txtConvertedCurrency)
-        10
+
         val innerClassObject = DownloadData()
         innerClassObject.execute()
 
@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity() {
     inner class DownloadData : AsyncTask<String, Int, List<Currency>>() {
 
         override fun doInBackground(vararg p0: String?): List<Currency>? {
+
             val parseCurrency = ParseCurrency()
             return parseCurrency.parseCurrencyObjectFromJSONData()
         }
