@@ -3,11 +3,13 @@ package com.example.shin.currencyconverter
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
+    val netConnection : CheckInternetConnection = CheckInternetConnection(this)
     private lateinit var spinnerCurrentCurrency: Spinner
     lateinit var txtCurrentPrice: TextView
     private lateinit var txtCurrenrDate: TextView
@@ -40,75 +42,86 @@ class MainActivity : AppCompatActivity() {
         edtAmount = findViewById(R.id.edtAmount)
         txtConvertedCurrency = findViewById(R.id.txtConvertedCurrency)
 
-        val innerClassObject = DownloadData()
-        innerClassObject.execute()
+        if (this.netConnection.isConnected) {
+
+            val innerClassObject = DownloadData()
+            innerClassObject.execute()
 
 
-        val result = innerClassObject.get()
+            val result = innerClassObject.get()
 
-        var spinArrAdapter: ArrayAdapter<Currency> = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, result)
-        spinnerCurrentCurrency.adapter = spinArrAdapter
+            var spinArrAdapter: ArrayAdapter<Currency> = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, result)
+            spinnerCurrentCurrency.adapter = spinArrAdapter
 
-        spinnerCurrentCurrency.setSelection(8)
-        txtCurrenrDate.text = result.first().toStringCurrentDate()
+            spinnerCurrentCurrency.setSelection(8)
+            txtCurrenrDate.text = result.first().toStringCurrentDate()
 
-        spinnerCurrentCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+            spinnerCurrentCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
 
+                }
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    txtCurrentPrice.text = result.get(p2).toStringMidPrice()
+                    test = result.get(p2).toStringMidPrice().toDouble()
+                    println(test)
+                }
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                txtCurrentPrice.text = result.get(p2).toStringMidPrice()
-                test = result.get(p2).toStringMidPrice().toDouble()
-                println(test)
-            }
-        }
 
+            spinnerCurrencyFrom.adapter = spinArrAdapter
+            spinnerCurrencyTo.adapter = spinArrAdapter
 
-        spinnerCurrencyFrom.adapter = spinArrAdapter
-        spinnerCurrencyTo.adapter = spinArrAdapter
+            spinnerCurrencyFrom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
 
-        spinnerCurrencyFrom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                currFrom = result.get(p2).toStringMidPrice().toDouble()
-                println(currFrom)
-            }
-        }
-
-        spinnerCurrencyTo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    currFrom = result.get(p2).toStringMidPrice().toDouble()
+                    println(currFrom)
+                }
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                currTo = result.get(p2).toStringMidPrice().toDouble()
+            spinnerCurrencyTo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    currTo = result.get(p2).toStringMidPrice().toDouble()
+                }
             }
-        }
 
 
 
-        btnConvert.setOnClickListener {
+            btnConvert.setOnClickListener {
 
-            try {
+                try {
 
 
-                amount = edtAmount.text.toString().toDouble()
+                    amount = edtAmount.text.toString().toDouble()
 
-                var convertedCurrency = ConvertCurrency(currFrom, currTo, amount)
-                convertedCurrency.convertCurrency()
+                    var convertedCurrency = ConvertCurrency(currFrom, currTo, amount)
+                    convertedCurrency.convertCurrency()
 
-                txtConvertedCurrency.text = convertedCurrency.toString()
-            } catch (e: Exception) {
-                Toast.makeText(this, "Podaj wartośc", Toast.LENGTH_SHORT).show()
+                    txtConvertedCurrency.text = convertedCurrency.toString()
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Podaj wartośc", Toast.LENGTH_SHORT).show()
+                }
             }
+
+        }else{
+
+            var toast : Toast = Toast.makeText(this , "Sprawdź połączenie z ineternetem", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.CENTER,0,0)
+            toast.show()
+
         }
 
     }
-
-
     inner class DownloadData : AsyncTask<String, Int, List<Currency>>() {
+
+
+
 
         override fun doInBackground(vararg p0: String?): List<Currency>? {
 

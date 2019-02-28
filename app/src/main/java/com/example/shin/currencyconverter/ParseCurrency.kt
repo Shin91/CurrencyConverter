@@ -7,6 +7,8 @@ class ParseCurrency {
 
     fun parseCurrencyObjectFromJSONData(): List<Currency>? {
 
+
+
         var allCurrencyObjects: ArrayList<Currency> = ArrayList()
         var downloadingDataFromURL = DownloadDataFromURL()
         var topLevelCurrencyJSONData = downloadingDataFromURL.downloadJSONDataFromURL("http://api.nbp.pl/api/exchangerates/tables/a/?format=json")
