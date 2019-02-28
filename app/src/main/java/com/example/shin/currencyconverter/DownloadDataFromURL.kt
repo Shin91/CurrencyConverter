@@ -15,6 +15,9 @@ class DownloadDataFromURL {
 
 
             val stringBuilder: StringBuilder = StringBuilder()
+            val netConnection : CheckInternetConnection
+
+
 
             val url = URL(link)
             val urlConnection = url.openConnection() as HttpURLConnection
