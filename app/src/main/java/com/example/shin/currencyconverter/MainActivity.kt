@@ -9,10 +9,10 @@ import android.widget.*
 
 class MainActivity : AppCompatActivity() {
 
-    val netConnection : CheckInternetConnection = CheckInternetConnection(this)
+    val netConnection: CheckInternetConnection = CheckInternetConnection(this)
     private lateinit var spinnerCurrentCurrency: Spinner
     lateinit var txtCurrentPrice: TextView
-    private lateinit var txtCurrenrDate: TextView
+    private lateinit var txtCurrencyDate: TextView
     private lateinit var spinnerCurrencyFrom: Spinner
     private lateinit var spinnerCurrencyTo: Spinner
     private lateinit var btnConvert: Button
@@ -29,12 +29,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var test = 0.00
-
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         txtCurrentPrice = findViewById(R.id.txtCurrentPriceView)
-        txtCurrenrDate = findViewById(R.id.txtCurrentDate)
+        txtCurrencyDate = findViewById(R.id.txtCurrentDate)
         spinnerCurrentCurrency = findViewById(R.id.spinCurrentCurrency)
         spinnerCurrencyFrom = findViewById(R.id.spinCurrencyFrom)
         spinnerCurrencyTo = findViewById(R.id.spinCurrencyTo)
@@ -50,11 +48,11 @@ class MainActivity : AppCompatActivity() {
 
             val result = innerClassObject.get()
 
-            var spinArrAdapter: ArrayAdapter<Currency> = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_item, result)
+            var spinArrAdapter: ArrayAdapter<Currency> = ArrayAdapter(this@MainActivity, R.layout.row, R.id.text1, result)
             spinnerCurrentCurrency.adapter = spinArrAdapter
 
             spinnerCurrentCurrency.setSelection(8)
-            txtCurrenrDate.text = result.first().toStringCurrentDate()
+            txtCurrencyDate.text = result.first().toStringCurrentDate()
 
             spinnerCurrentCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -63,8 +61,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     txtCurrentPrice.text = result.get(p2).toStringMidPrice()
-                    test = result.get(p2).toStringMidPrice().toDouble()
-                    println(test)
+
                 }
             }
 
@@ -109,18 +106,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        }else{
+        } else {
 
-            var toast : Toast = Toast.makeText(this , "Sprawdź połączenie z ineternetem", Toast.LENGTH_LONG)
-            toast.setGravity(Gravity.CENTER,0,0)
+            var toast: Toast = Toast.makeText(this, "Sprawdź połączenie z ineternetem", Toast.LENGTH_LONG)
+            toast.setGravity(Gravity.CENTER, 0, 0)
             toast.show()
+
 
         }
 
     }
+
     inner class DownloadData : AsyncTask<String, Int, List<Currency>>() {
-
-
 
 
         override fun doInBackground(vararg p0: String?): List<Currency>? {

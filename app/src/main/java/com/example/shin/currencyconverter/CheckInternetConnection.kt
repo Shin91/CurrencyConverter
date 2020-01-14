@@ -27,3 +27,6 @@ class CheckInternetConnection(var context: Context) {
             return connected
         }
 }
+
+
+
